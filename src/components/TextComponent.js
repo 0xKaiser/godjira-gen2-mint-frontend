@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { providerHandler } from "./../Contractor/SmapleCourt";
+import { providerHandler } from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
   const connectWalletHandler = () => {
