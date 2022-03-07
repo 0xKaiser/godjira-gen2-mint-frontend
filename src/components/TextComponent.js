@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { providerHandler } from "./../contract/contractInteraction";
+import { providerHandler, getAddress } from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
   const connectWalletHandler = () => {
@@ -8,16 +8,16 @@ const TextComponent = (props) => {
         .request({ method: "eth_requestAccounts" })
         .then(async (result) => {
           await providerHandler();
-          // props.showMintHandler(result);
+          props.showMintHandler(result);
           setConnected(true);
-          // get_address().then((e) => {
-          //   let strFirstThree = e.substring(0, 5);
-          //   let strLastThree = e.substr(e.length - 5);
-          //   const addr = `${strFirstThree}.............${strLastThree}`;
-          //   setAddress(addr);
-          // });
+          getAddress().then((e) => {
+            let strFirstThree = e.substring(0, 5);
+            let strLastThree = e.substr(e.length - 5);
+            const addr = `${strFirstThree}...${strLastThree}`;
+            setWalletAddress(addr);
+          });
         })
-        .catch((e) => {});
+        .catch((e) => { });
     }
   };
 
@@ -26,6 +26,8 @@ const TextComponent = (props) => {
   const [minted, setMinted] = useState(false);
 
   const [mintCount, setMintCount] = useState(0);
+
+  const [walletAddress, setWalletAddress] = useState("")
 
   const mintToken = () => {
     if (!minted && mintCount === 0) {
@@ -39,10 +41,13 @@ const TextComponent = (props) => {
   return (
     <div className="textContainer">
       <div className="gen-2-logo">
-        <img
-          style={minted ? {width: "450px", height: "200px",  marginLeft: "10%", marginTop:"12%" } : { width: "450px", height: "200px", marginTop:"12%"}}
+        {!connected? <img
+          style={{ width: "450px", height: "200px", marginTop: "12%" }}
           src={require("../assets/Group 13081@2x.png")}
-        />
+        />: <img
+        style={minted ? { width: "450px", height: "200px", marginLeft: "6%", marginTop: "auto" } : { width: "450px", height: "200px",marginLeft: "29%", marginTop: "12%" }}
+        src={require("../assets/Group 13081@2x.png")}
+      />}
       </div>
       <div className="connect-mint-button">
         {connected ? (
@@ -53,24 +58,28 @@ const TextComponent = (props) => {
           ) : (
             <>
               {connected && !minted && <>
-                <div className = "wallet-address">
-                  0x60a...74f71
+                <div className="wallet-address">
+                  {walletAddress}
                 </div>
-                <div className = "wallet-address-connected">
-                  Connected
+                <div className="wallet-address-connected">
+                  CONNECTED
+                </div>
+                <div className="wallet-address-text">
+                  WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!
+                  HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH
                 </div>
               </>}
               <button
-                className="connect-wallet-button"
+                className="connect-wallet-button-mint"
                 onClick={() => {
                   mintToken();
                 }}
               >
                 MINT NOW!
               </button>
-              <div className="number-of-mint">
+              {/* <div className="number-of-mint">
                 <span className="osake-font-apply">2500 </span>LEFT
-              </div>
+              </div> */}
             </>
           )
         ) : (
@@ -79,7 +88,7 @@ const TextComponent = (props) => {
             onClick={connectWalletHandler}
           >
             <span>
-              <img style={{ marginRight: "12px",  width:"30px", height:"30px"}} src={require("../assets/wallet.png")} />
+              <img style={{ marginRight: "12px", width: "30px", height: "30px" }} src={require("../assets/wallet.png")} />
             </span>
             CONNECT
           </button>
