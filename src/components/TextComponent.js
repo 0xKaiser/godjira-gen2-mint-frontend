@@ -1,41 +1,74 @@
 import React, { useState } from "react";
-import { providerHandler, getAddress } from "./../contract/contractInteraction";
+import { providerHandler, getAddress, isWhiteListed, isPrivateListed,  isGenesisHolder, privateSale, whitelistSale, genesisSale, privateBought, whitelistBought, genesisBought} from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
-  const connectWalletHandler = () => {
+  const connectWalletHandler = async () => {
+    console.log("Inside it")
     if (window.ethereum) {
       window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then(async (result) => {
           await providerHandler();
-          props.showMintHandler(result);
           setConnected(true);
-          getAddress().then((e) => {
-            let strFirstThree = e.substring(0, 5);
-            let strLastThree = e.substr(e.length - 5);
-            const addr = `${strFirstThree}...${strLastThree}`;
-            setWalletAddress(addr);
-          });
+          const addr = getAddress()
+          let strFirstThree = addr.substring(0, 5);
+          let strLastThree = addr.substr(addr.length - 5);
+          let address = `${strFirstThree}...${strLastThree}`;
+          setWalletAddress(address);
+
+          let isPrivateListedRes = await isPrivateListed(addr)
+          let privateBoughtRes = await privateBought(privateListed)
+          
+          let isWhiteListedRes = await isWhiteListed(addr)
+          let whitelistBoughtRes = await whitelistBought(whiteListed)
+
+          let isGenesisHolderRes = await isGenesisHolder(addr)
+          let genesisBoughtres = await genesisBought(genesisHolder)
+
+          // let genesisClaimed = await genesisClaimed(genesisHolder)
+          // let gen2Claimed = await gen2Claimed(genesisHolder)
+
+          setPrivateListed(isPrivateListedRes)
+          setWhiteListed(isWhiteListedRes)
+          setGenesisHolder(isGenesisHolderRes)
+          setPrivateBought(privateBoughtRes)
+          setWhitelistBoughtRes(whitelistBoughtRes)
+          setGenesisBoughtres(genesisBoughtres)
         })
-        .catch((e) => { });
     }
   };
+
+  //privateSale(walletAddress, privateListed)
+  //genesisBought(genesisHolder)
+
+  const [privateListed, setPrivateListed] = useState(false);
+  const [whiteListed, setWhiteListed] = useState(false);
+  const [genesisHolder, setGenesisHolder] = useState(false);
+
+  const [privateBoughtInitiated, setPrivateBought] = useState(false);
+  const [whitelistBoughtInitiated, setWhitelistBoughtRes] = useState(false);
+  const [genesisBoughtInitiated, setGenesisBoughtres] = useState(false);
 
   const [connected, setConnected] = useState(false);
 
   const [minted, setMinted] = useState(false);
 
-  const [mintCount, setMintCount] = useState(0);
 
   const [walletAddress, setWalletAddress] = useState("")
 
   const mintToken = () => {
-    if (!minted && mintCount === 0) {
-      setMintCount(1)
-      alert("You have minted token number 6");
-    } else {
-      setMinted(true);
-    }
+    if (privateListed && !privateBoughtInitiated) {
+      privateSale(walletAddress, privateListed)
+      alert("Minted Successfully");
+    } 
+    if (whiteListed && !whitelistBoughtInitiated) {
+      privateSale(walletAddress, whiteListed)
+      alert("Minted Successfully");
+    } 
+    if (genesisHolder && !genesisBoughtInitiated) {
+      privateSale(walletAddress, genesisHolder)
+      alert("Minted Successfully");
+    } 
   };
 
   return (
