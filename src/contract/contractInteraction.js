@@ -1,10 +1,12 @@
 import {ethers} from 'ethers'
 import abi from './abi.json'
 import axios from "axios"
-
+import genesisabi from './genesisabi.json'
 let address
 let contractAddress
 let contract
+let genesisContract
+let genesisContractAddress
 
 const value =0.099
 const backend_url = 'https://godjira-backend.herokuapp.com/'
@@ -15,9 +17,9 @@ export const providerHandler = async () => {
     address = account[0];
     const signer = provider.getSigner();
     contractAddress = "0x0F71f3cC4643cAC976916A48cf98CA096D48B7D2"
-
+    genesisContractAddress = ""
     contract = new ethers.Contract(contractAddress, abi, signer);
-    
+    genesisContract = new ethers.Contract(genesisContractAddress, genesisabi, signer);
     console.log('contracts init done')
 };
 
@@ -132,4 +134,19 @@ export const isPrivateListed = async(walletAddress) => {
         return false
     }
 
+}
+
+export const isGenesisHolder = async(walletAddress) => {
+    const nftCount = await genesisContract.balanceOf(walletAddress)
+    if (nftCount === 0) {
+        return false
+    }
+    else {
+        let nft_list =[]
+        for (let i = 0; i < nftCount; i++) {
+            const n = await genesisContract.tokenOfOwnerByIndex(walletAddress,i)
+            nft_list.push(n)
+        }
+        return nft_list
+    }
 }
