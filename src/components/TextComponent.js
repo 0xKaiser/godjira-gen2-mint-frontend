@@ -57,6 +57,7 @@ const TextComponent = (props) => {
   const [walletAddress, setWalletAddress] = useState("")
 
   const mintToken = () => {
+    console.log("YES.....", privateListed, whiteListed, genesisHolder, privateBoughtInitiated, whitelistBoughtInitiated, genesisBoughtInitiated)
     if (privateListed && !privateBoughtInitiated) {
       privateSale(walletAddress, privateListed)
       alert("Minted Successfully");
