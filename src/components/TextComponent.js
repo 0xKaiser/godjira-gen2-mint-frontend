@@ -84,6 +84,7 @@ const TextComponent = (props) => {
   };
 
   const mintToken = async () => {
+    setLoader(true)
     console.log(
       "YES.....",
       privateListed,
@@ -137,6 +138,7 @@ const TextComponent = (props) => {
         //alert("Minted Successfully");
       }
     }
+    setLoader(false)
   };
   console.log(whiteListed, "whiteListed");
 
