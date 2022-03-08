@@ -2,6 +2,12 @@ import {ethers} from 'ethers'
 import abi from './abi.json'
 import axios from "axios"
 import genesisabi from './genesisabi.json'
+
+const PRIVATE_TIME=1646718358
+const WHITE_TIME=1646718358
+const GENESIS_TIME=1646718358
+
+
 let address
 let contractAddress
 let contract
@@ -140,15 +146,43 @@ export const isPrivateListed = async (walletAddress) => {
 
 export const isGenesisHolder = async(walletAddress) => {
     const nftCount = await genesisContract.balanceOf(walletAddress)
-    if (nftCount === 0) {
+    console.log(nftCount.toNumber())
+    if (nftCount.toNumber() === 0) {
         return false
     }
     else {
         let nft_list =[]
-        for (let i = 0; i < nftCount; i++) {
+        for (let i = 0; i < nftCount.toNumber(); i++) {
             const n = await genesisContract.tokenOfOwnerByIndex(walletAddress,i)
             nft_list.push(n)
         }
         return nft_list
+    }
+}
+
+export const isPrivateTime = async()=> {
+    if (Math.floor(Date.now() / 1000)>=PRIVATE_TIME){
+        return true
+    }
+    else{
+        return false
+    }
+}
+
+export const isWhiteTime = async()=> {
+    if (Math.floor(Date.now() / 1000)>=WHITE_TIME){
+        return true
+    }
+    else{
+        return false
+    }
+}
+
+export const isGenesisTime = async()=> {
+    if (Math.floor(Date.now() / 1000)>=GENESIS_TIME){
+        return true
+    }
+    else{
+        return false
     }
 }
