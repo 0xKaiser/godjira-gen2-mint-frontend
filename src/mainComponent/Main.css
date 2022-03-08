@@ -76,6 +76,7 @@ p span span {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin-top: 5%;
 }
 
 .button {
@@ -126,9 +127,9 @@ p span span {
   width: 300px;
   height: 70px;
   cursor: pointer;
-  margin-left: 34%;
+  margin-left: 20%;
   margin-top: 2%;
-  margin-bottom: -25%;
+  margin-bottom: -20%;
 }
 
 .connect-wallet-button-initial{
@@ -165,7 +166,7 @@ p span span {
   color: #FFFD41;
   font-size: 22px;
   font-weight: 600;
-  padding-left: 44%;
+  padding-left: 38%;
   padding-bottom: 2%;
 }
 
@@ -173,7 +174,7 @@ p span span {
   color: #FFFD41;
   font-size: 22px;
   font-weight: 600;
-  padding-left: 45%;
+  padding-left: 40%;
   padding-bottom: 2%;
 }
 

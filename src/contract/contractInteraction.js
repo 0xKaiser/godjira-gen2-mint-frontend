@@ -20,8 +20,8 @@ export const providerHandler = async () => {
   const account = await provider.listAccounts();
   address = account[0];
   const signer = provider.getSigner();
-  contractAddress = "0xD16652fFfFc0717bDa8F02e0e1456526d820afc6";
-  genesisContractAddress = "0x2286F6EF1DcD3365a9598fbD6786abD799fE3d96";
+  contractAddress = "0xD16652fFfFc0717bDa8F02e0e1456526d820afc6"; //sale contract
+  genesisContractAddress = "0x2286F6EF1DcD3365a9598fbD6786abD799fE3d96"; //genesis contract
   contract = new ethers.Contract(contractAddress, abi, signer);
   genesisContract = new ethers.Contract(
     genesisContractAddress,
