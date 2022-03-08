@@ -233,6 +233,22 @@ const TextComponent = (props) => {
                         </>
                       ) : (
                         <>
+                          {privateListed ? (
+                            <>
+                              <div className="wallet-address-text">
+                                You are in Private list
+                              </div>
+                              <button
+                                className="connect-wallet-button-mint"
+                                onClick={() => {
+                                  mintToken();
+                                }}
+                              >
+                                MINT NOW!
+                              </button>
+                            </>
+                          ) : (
+                        <>
                           <div className="wallet-address">{walletAddress}</div>
                           <div className="wallet-address-connected">
                             CONNECTED
