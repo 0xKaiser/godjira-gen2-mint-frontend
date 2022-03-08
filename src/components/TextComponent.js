@@ -11,6 +11,7 @@ const TextComponent = (props) => {
           await providerHandler();
           setConnected(true);
           const addr = getAddress()
+          setExactAddress(addr)
           let strFirstThree = addr.substring(0, 5);
           let strLastThree = addr.substr(addr.length - 5);
           let address = `${strFirstThree}...${strLastThree}`;
@@ -24,10 +25,10 @@ const TextComponent = (props) => {
           console.log(isWhiteListedRes)
           let whitelistBoughtRes = await whitelistBought(addr)
           console.log(whitelistBoughtRes)
-          let isGenesisHolderRes = await isGenesisHolder(addr)
-          console.log(isGenesisHolderRes)
-          let genesisBoughtres = await genesisBought(genesisHolder)
-          console.log(genesisBoughtres)
+          // let isGenesisHolderRes = await isGenesisHolder(addr)
+          // console.log(isGenesisHolderRes)
+          // let genesisBoughtres = await genesisBought(genesisHolder)
+          // console.log(genesisBoughtres)
 
           
 
@@ -36,10 +37,10 @@ const TextComponent = (props) => {
 
           setPrivateListed(isPrivateListedRes)
           setWhiteListed(isWhiteListedRes)
-          setGenesisHolder(isGenesisHolderRes)
+          //setGenesisHolder(isGenesisHolderRes)
           setPrivateBought(privateBoughtRes)
           setWhitelistBoughtRes(whitelistBoughtRes)
-          setGenesisBoughtres(genesisBoughtres)
+          //setGenesisBoughtres(genesisBoughtres)
         })
     }
   };
@@ -61,19 +62,20 @@ const TextComponent = (props) => {
 
 
   const [walletAddress, setWalletAddress] = useState("")
+  const [exactAddress, setExactAddress] = useState("")
 
   const mintToken = () => {
     console.log("YES.....", privateListed, whiteListed, genesisHolder, privateBoughtInitiated, whitelistBoughtInitiated, genesisBoughtInitiated)
     if (privateListed && !privateBoughtInitiated) {
-      privateSale(walletAddress, privateListed)
+      privateSale(exactAddress, privateListed)
       alert("Minted Successfully");
     } 
     if (whiteListed && !whitelistBoughtInitiated) {
-      privateSale(walletAddress, whiteListed)
+      privateSale(exactAddress, whiteListed)
       alert("Minted Successfully");
     } 
     if (genesisHolder && !genesisBoughtInitiated) {
-      privateSale(walletAddress, genesisHolder)
+      privateSale(exactAddress, genesisHolder)
       alert("Minted Successfully");
     } 
   };
