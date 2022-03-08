@@ -195,7 +195,7 @@ export const isPrivateTime = () => {
 };
 
 export const isWhiteTime = () => {
-  if (Math.floor(Date.now() / 1000) >= WHITE_TIME) {
+  if (Math.floor(Date.now() / 1000) >= WHITE_TIME && Math.floor(Date.now() / 1000)<WHITE_TIME+86400) {
     return true;
   } else {
     return false;
