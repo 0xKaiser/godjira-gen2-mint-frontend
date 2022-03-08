@@ -42,7 +42,7 @@ const TextComponent = (props) => {
     let isGenesisHolderRes = await isGenesisHolder(exactAddress)
     if(isGenesisHolderRes){
       setGenesisHolder(isGenesisHolderRes)
-      let genesisBoughtres = await genesisBought(genesisHolder)
+      let genesisBoughtres = await genesisBought(isGenesisHolderRes)
       setGenesisBoughtres(genesisBoughtres)
     }
 

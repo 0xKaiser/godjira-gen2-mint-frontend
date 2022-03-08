@@ -84,9 +84,19 @@ export const privateBought = async (walletAddress) => {
 }
 
 // wallet already bought from genesis sale? return bool
-export const genesisBought = async (tokenId) => {
-    const n = await contract.genesisBought(tokenId)
-    return n;
+export const genesisBought = async (tokenIds) => {
+    
+    let unclaimed = []
+    for (let i in tokenIds) {   
+        const n = await contract.genesisBought(tokenIds[i])
+        if(!n){
+            unclaimed.push(tokenIds[i])
+        }
+    }
+    console.log(unclaimed)
+    return unclaimed
+    
+    
 }
 
 // wallet already bought from whitelistBought sale? return bool
@@ -154,8 +164,9 @@ export const isGenesisHolder = async (walletAddress) => {
         let nft_list = []
         for (let i = 0; i < nftCount.toNumber(); i++) {
             const n = await genesisContract.tokenOfOwnerByIndex(walletAddress, i)
-            nft_list.push(n)
+            nft_list.push(n.toNumber())
         }
+        console.log(nft_list)
         return nft_list
     }
 }
