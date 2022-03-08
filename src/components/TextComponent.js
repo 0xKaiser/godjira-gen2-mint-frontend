@@ -78,7 +78,7 @@ const TextComponent = (props) => {
     if (privateListed) {
       let privateTime = isPrivateTime()
       if(!privateTime){
-        alert("Private sale not started.")
+        //alert("Private sale not started.")
         return 
       }
       if (privateBoughtInitiated) {
@@ -91,7 +91,7 @@ const TextComponent = (props) => {
     if (whiteListed) {
       let whiteListTime = isWhiteTime()
       if(!whiteListTime){
-        alert("WhiteList sale not started.")
+        //alert("WhiteList sale not started.")
         return 
       }
       if (whitelistBoughtInitiated) {
@@ -104,7 +104,7 @@ const TextComponent = (props) => {
     if (genesisHolder) {
       let genesisTime = isGenesisTime()
       if(genesisTime){
-        alert("Genesis sale not started.")
+        // alert("Genesis sale not started.")
         return 
       }
       if (genesisBoughtInitiated) {
