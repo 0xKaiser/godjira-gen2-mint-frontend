@@ -38,26 +38,38 @@ export const getAddress = () => {
 
 // sale function for private list account
 export const privateSale = async (privateListedAddress, signature) => {
-    const n = await contract.privateSale([privateListedAddress, true, signature], {
-        value: ethers.utils.parseEther(`${value}`).toString()
-    })
-    await n.wait()
+    try{
+        const n = await contract.privateSale([privateListedAddress, true, signature], {
+            value: ethers.utils.parseEther(`${value}`).toString()
+        })
+        await n.wait()
+    }catch(e){
+        alert("YOU HAVE ALREADY MINTED")
+    }
 }
 
 // sale function for white list account
 export const whitelistSale = async (whitelistedAddress, signature) => {
-    const n = await contract.whitelistSale([whitelistedAddress, false, signature], {
-        value: ethers.utils.parseEther(`${value}`).toString()
-    })
-    await n.wait()
+    try{
+        const n = await contract.whitelistSale([whitelistedAddress, false, signature], {
+            value: ethers.utils.parseEther(`${value}`).toString()
+        })
+        await n.wait()
+    }catch(e){
+        alert("YOU HAVE ALREADY MINTED")
+    }
 }
 
 // sale function for genesis holders (pass array of tokenIds)
 export const genesisSale = async (tokenIds) => {
-    const n = await contract.genesisSale(tokenIds, {
-        value: ethers.utils.parseEther(`${value * tokenIds.length}`).toString()
-    })
-    await n.wait()
+    try{
+        const n = await contract.genesisSale(tokenIds, {
+            value: ethers.utils.parseEther(`${value * tokenIds.length}`).toString()
+        })
+        await n.wait()
+    }catch(e){
+        alert("YOU HAVE ALREADY MINTED")
+    }
 }
 
 //claim functions

@@ -9,7 +9,7 @@ const TextComponent = (props) => {
 
   const [privateBoughtInitiated, setPrivateBought] = useState(false);
   const [whitelistBoughtInitiated, setWhitelistBoughtRes] = useState(false);
-  const [genesisBoughtInitiated, setGenesisBoughtRes] = useState([]);
+  const [genesisBoughtInitiated, setGenesisBoughtRes] = useState(false);
 
   const [connected, setConnected] = useState(false);
 
@@ -30,6 +30,7 @@ const TextComponent = (props) => {
 
   const check = async () => {
     setLoader(true)
+    let genesisBoughtRes = []
     let isPrivateListedRes = await isPrivateListed(exactAddress)
     setPrivateListed(isPrivateListedRes)
     let privateBoughtRes = await privateBought(exactAddress)
@@ -42,11 +43,11 @@ const TextComponent = (props) => {
     let isGenesisHolderRes = await isGenesisHolder(exactAddress)
     if(isGenesisHolderRes){
       setGenesisHolder(isGenesisHolderRes)
-      let genesisBoughtRes = await genesisBought(isGenesisHolderRes)
+      genesisBoughtRes = await genesisBought(isGenesisHolderRes)
       console.log(genesisBoughtRes, "initial res")
       setGenesisBoughtRes(genesisBoughtRes)
-      console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf")
     }
+
 
     //Setting text MESSAGE 
     if(isPrivateListedRes)setTextMessage(msg.private)
@@ -58,6 +59,8 @@ const TextComponent = (props) => {
     
     setLoader(false)
   }
+
+  console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf")
 
   const connectWallet = async () => {
     console.log("CLICKED ON Connect wallet")
@@ -79,7 +82,7 @@ const TextComponent = (props) => {
         return 
       }
       if (privateBoughtInitiated) {
-        alert("You have already minted")
+        //alert("You have already minted")
       } else {
         await privateSale(exactAddress, privateListed)
         alert("Minted Successfully");
@@ -92,7 +95,7 @@ const TextComponent = (props) => {
         return 
       }
       if (whitelistBoughtInitiated) {
-        alert("You have already minted")
+        //alert("You have already minted")
       } else {
         await whitelistSale(exactAddress, whiteListed)
         alert("Minted Successfully");
@@ -100,12 +103,12 @@ const TextComponent = (props) => {
     }
     if (genesisHolder) {
       let genesisTime = isGenesisTime()
-      if(!genesisTime){
+      if(genesisTime){
         alert("Genesis sale not started.")
         return 
       }
       if (genesisBoughtInitiated) {
-        alert("You have already minted")
+        // alert("You have already minted")
       } else {
         await genesisSale(genesisHolder)
         alert("Minted Successfully");
@@ -121,13 +124,13 @@ const TextComponent = (props) => {
             style={{ width: "450px", height: "200px", marginTop: "12%" }}
             src={require("../assets/Group 13081@2x.png")}
           /> : <img
-            style={privateBoughtInitiated || whitelistBoughtInitiated || genesisBoughtInitiated ? { width: "450px", height: "200px", marginLeft: "6%", marginTop: "auto" } : { width: "450px", height: "200px", marginLeft: "29%", marginTop: "12%" }}
+            style={{ width: "450px", height: "200px", marginLeft: "29%", marginTop: "12%" }}
             src={require("../assets/Group 13081@2x.png")}
           />}
         </div>
         <div className="connect-mint-button">
           {connected ? (
-            privateBoughtInitiated || whitelistBoughtInitiated || genesisBoughtInitiated ? (
+            false ? (
               <div className="message">
                 YOU HAVE ALREADY MINTED
               </div>
