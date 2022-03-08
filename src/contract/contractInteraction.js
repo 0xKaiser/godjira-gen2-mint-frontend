@@ -162,7 +162,7 @@ export const isPrivateListed = async (walletAddress) => {
     const { data } = await axios.post(backend_url + "privatelist", {
       address: walletAddress,
     });
-    //console.log(data.signature)
+    console.log(data.signature)
     return data.signature;
   } catch (err) {
     console.log(err);

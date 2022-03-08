@@ -65,6 +65,15 @@ const TextComponent = (props) => {
 
     setLoader(false);
   };
+  console.log(
+    "YES.....",
+    privateListed,
+    whiteListed,
+    genesisHolder,
+    privateBoughtInitiated,
+    whitelistBoughtInitiated,
+    genesisBoughtInitiated
+  );
 
   const connectWallet = async () => {
     console.log("CLICKED ON Connect wallet");
@@ -84,15 +93,7 @@ const TextComponent = (props) => {
   };
 
   const mintToken = async () => {
-    console.log(
-      "YES.....",
-      privateListed,
-      whiteListed,
-      genesisHolder,
-      privateBoughtInitiated,
-      whitelistBoughtInitiated,
-      genesisBoughtInitiated
-    );
+    
    if (privateListed) {
       console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
@@ -178,11 +179,11 @@ const TextComponent = (props) => {
           <div className="connect-mint-button">
             {connected ? (
               privateListed && privateBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 1</div>
+                <div className="message">YOU HAVE ALREADY MINTED </div>
               ) : whiteListed && whitelistBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 2</div>
+                <div className="message">YOU HAVE ALREADY MINTED </div>
               ) : genesisHolder && !genesisBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 3</div>
+                <div className="message">YOU HAVE ALREADY MINTED </div>
               ) : connected && minted ? (
                 <>
                   <div className="wallet-address">{walletAddress}</div>
