@@ -160,7 +160,7 @@ export const isGenesisHolder = async(walletAddress) => {
     }
 }
 
-export const isPrivateTime = async()=> {
+export const isPrivateTime = ()=> {
     if (Math.floor(Date.now() / 1000)>=PRIVATE_TIME){
         return true
     }
@@ -169,7 +169,7 @@ export const isPrivateTime = async()=> {
     }
 }
 
-export const isWhiteTime = async()=> {
+export const isWhiteTime = ()=> {
     if (Math.floor(Date.now() / 1000)>=WHITE_TIME){
         return true
     }
@@ -178,7 +178,7 @@ export const isWhiteTime = async()=> {
     }
 }
 
-export const isGenesisTime = async()=> {
+export const isGenesisTime = ()=> {
     if (Math.floor(Date.now() / 1000)>=GENESIS_TIME){
         return true
     }
@@ -186,3 +186,23 @@ export const isGenesisTime = async()=> {
         return false
     }
 }
+
+  export const connectWalletHandler = async (setLoader, setConnected, setWalletAddress, setExactAddress) => {
+    setLoader(true);
+    if (window.ethereum) {
+        window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then(async (result) => {
+          await providerHandler();
+          const addr = getAddress()
+          setExactAddress(addr)
+          console.log(addr)
+          let strFirstThree = addr.substring(0, 5);
+          let strLastThree = addr.substr(addr.length - 5);
+          let address = `${strFirstThree}...${strLastThree}`;
+          setWalletAddress(address);
+          setConnected(true);
+          setLoader(false)
+        })
+    }
+ };

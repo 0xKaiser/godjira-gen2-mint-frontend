@@ -1,52 +1,7 @@
-import React, { useState } from "react";
-import { providerHandler, getAddress, isWhiteListed, isPrivateListed,  isGenesisHolder, privateSale, whitelistSale, genesisSale, privateBought, whitelistBought, genesisBought} from "./../contract/contractInteraction";
+import React, { useState, useEffect } from "react";
+import { connectWalletHandler, isPrivateTime, isGenesisTime ,isWhiteTime, isWhiteListed, isPrivateListed, isGenesisHolder, privateSale, whitelistSale, genesisSale, privateBought, whitelistBought, genesisBought, isPrivateTime } from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
-  const connectWalletHandler = async () => {
-    console.log("Inside it")
-    if (window.ethereum) {
-      window.ethereum
-        .request({ method: "eth_requestAccounts" })
-        .then(async (result) => {
-          await providerHandler();
-          setConnected(true);
-          const addr = getAddress()
-          setExactAddress(addr)
-          let strFirstThree = addr.substring(0, 5);
-          let strLastThree = addr.substr(addr.length - 5);
-          let address = `${strFirstThree}...${strLastThree}`;
-          setWalletAddress(address);
-          console.log('Calling functions')
-          let isPrivateListedRes = await isPrivateListed(addr)
-          console.log(isPrivateListedRes)
-          let privateBoughtRes = await privateBought(addr)
-          console.log(privateBoughtRes)
-          let isWhiteListedRes = await isWhiteListed(addr)
-          console.log(isWhiteListedRes)
-          let whitelistBoughtRes = await whitelistBought(addr)
-          console.log(whitelistBoughtRes)
-          // let isGenesisHolderRes = await isGenesisHolder(addr)
-          // console.log(isGenesisHolderRes)
-          // let genesisBoughtres = await genesisBought(genesisHolder)
-          // console.log(genesisBoughtres)
-
-          
-
-          // let genesisClaimed = await genesisClaimed(genesisHolder)
-          // let gen2Claimed = await gen2Claimed(genesisHolder)
-
-          setPrivateListed(isPrivateListedRes)
-          setWhiteListed(isWhiteListedRes)
-          //setGenesisHolder(isGenesisHolderRes)
-          setPrivateBought(privateBoughtRes)
-          setWhitelistBoughtRes(whitelistBoughtRes)
-          //setGenesisBoughtres(genesisBoughtres)
-        })
-    }
-  };
-
-  //privateSale(walletAddress, privateListed)
-  //genesisBought(genesisHolder)
 
   const [privateListed, setPrivateListed] = useState(false);
   const [whiteListed, setWhiteListed] = useState(false);
@@ -60,83 +15,160 @@ const TextComponent = (props) => {
 
   const [minted, setMinted] = useState(false);
 
+  const [textMessage, setTextMessage] = useState("")
+
+  const [loader, setLoader] = useState(false)
 
   const [walletAddress, setWalletAddress] = useState("")
-  const [exactAddress, setExactAddress] = useState("")
+  const [exactAddress, setExactAddress] = useState("hbdcjbdwjbvjb")
+
+  useEffect(() => {
+    if(connected === true){
+      check();
+    }
+  }, [connected]);
+
+  const check = async () => {
+    setLoader(true)
+    let isPrivateListedRes = await isPrivateListed(exactAddress)
+    setPrivateListed(isPrivateListedRes)
+    let privateBoughtRes = await privateBought(exactAddress)
+    setPrivateBought(privateBoughtRes)
+    let isWhiteListedRes = await isWhiteListed(exactAddress)
+    setWhiteListed(isWhiteListedRes)
+    let whitelistBoughtRes = await whitelistBought(exactAddress)
+    setWhitelistBoughtRes(whitelistBoughtRes)
+    
+    // let isGenesisHolderRes = await isGenesisHolder(exactAddress)
+    // let genesisBoughtres = await genesisBought(genesisHolder)
+
+    //Setting text MESSAGE 
+    if(isPrivateListedRes)setTextMessage(msg.private)
+    if(isWhiteListedRes)setTextMessage(msg.whiteList)
+
+    // if(isGenesisHolderRes)setTextMessage(msg.genesis)
+
+    // let genesisClaimed = await genesisClaimed(genesisHolder)
+    // let gen2Claimed = await gen2Claimed(genesisHolder)
+    //setGenesisHolder(isGenesisHolderRes)
+    
+    
+    //setGenesisBoughtres(genesisBoughtres)
+    setLoader(false)
+  }
+
+  const connectWallet = async () => {
+    console.log("CLICKED ON Connect wallet")
+    await connectWalletHandler(setLoader, setConnected, setWalletAddress, setExactAddress)
+  }
+
+  const msg = {
+    private: "WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW! HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH",
+    whiteList: "WELCOME WHITE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!",
+    genesis: ""
+  }
 
   const mintToken = () => {
     console.log("YES.....", privateListed, whiteListed, genesisHolder, privateBoughtInitiated, whitelistBoughtInitiated, genesisBoughtInitiated)
-    if (privateListed && !privateBoughtInitiated) {
-      privateSale(exactAddress, privateListed)
-      alert("Minted Successfully");
-    } 
-    if (whiteListed && !whitelistBoughtInitiated) {
-      privateSale(exactAddress, whiteListed)
-      alert("Minted Successfully");
-    } 
-    if (genesisHolder && !genesisBoughtInitiated) {
-      privateSale(exactAddress, genesisHolder)
-      alert("Minted Successfully");
-    } 
+    if (privateListed) {
+      let privateTime = isPrivateTime()
+      if(!privateTime){
+        alert("Private sale not started.")
+        return 
+      }
+      if (privateBoughtInitiated) {
+        alert("You have already minted")
+      } else {
+        privateSale(exactAddress, privateListed)
+        alert("Minted Successfully");
+      }
+    }
+    if (whiteListed) {
+      let whiteListTime = isWhiteTime()
+      if(!whiteListTime){
+        alert("WhiteList sale not started.")
+        return 
+      }
+      if (whitelistBoughtInitiated) {
+        alert("You have already minted")
+      } else {
+        whitelistSale(exactAddress, whiteListed)
+        alert("Minted Successfully");
+      }
+    }
+    if (genesisHolder) {
+      let genesisTime = isGenesisTime()
+      if(!genesisTime){
+        alert("Genesis sale not started.")
+        return 
+      }
+      if (genesisBoughtInitiated) {
+        alert("You have already minted")
+      } else {
+        genesisSale(exactAddress, genesisHolder)
+        alert("Minted Successfully");
+      }
+    }
   };
 
   return (
-    <div className="textContainer">
-      <div className="gen-2-logo">
-        {!connected? <img
-          style={{ width: "450px", height: "200px", marginTop: "12%" }}
-          src={require("../assets/Group 13081@2x.png")}
-        />: <img
-        style={minted ? { width: "450px", height: "200px", marginLeft: "6%", marginTop: "auto" } : { width: "450px", height: "200px",marginLeft: "29%", marginTop: "12%" }}
-        src={require("../assets/Group 13081@2x.png")}
-      />}
-      </div>
-      <div className="connect-mint-button">
-        {connected ? (
-          minted ? (
-            <div className="message">
-              SORRY ONLY ONE MINT PER WALLET...
-            </div>
+    <>
+      {loader ? <div className="loader">Loading...</div> : <div className="textContainer">
+        <div className="gen-2-logo">
+          {!connected ? <img
+            style={{ width: "450px", height: "200px", marginTop: "12%" }}
+            src={require("../assets/Group 13081@2x.png")}
+          /> : <img
+            style={privateBoughtInitiated || whitelistBoughtInitiated || genesisBoughtInitiated ? { width: "450px", height: "200px", marginLeft: "6%", marginTop: "auto" } : { width: "450px", height: "200px", marginLeft: "29%", marginTop: "12%" }}
+            src={require("../assets/Group 13081@2x.png")}
+          />}
+        </div>
+        <div className="connect-mint-button">
+          {connected ? (
+            privateBoughtInitiated || whitelistBoughtInitiated || genesisBoughtInitiated ? (
+              <div className="message">
+                YOU HAVE ALREADY MINTED
+              </div>
+            ) : (
+              <>
+                {connected && !minted && <>
+                  <div className="wallet-address">
+                    {walletAddress}
+                  </div>
+                  <div className="wallet-address-connected">
+                    CONNECTED
+                  </div>
+                  <div className="wallet-address-text">
+                    {textMessage}
+                  </div>
+                </>}
+                <button
+                  className="connect-wallet-button-mint"
+                  onClick={() => {
+                    mintToken();
+                  }}
+                >
+                  MINT NOW!
+                </button>
+                {/* <div className="number-of-mint">
+              <span className="osake-font-apply">2500 </span>LEFT
+            </div> */}
+              </>
+            )
           ) : (
-            <>
-              {connected && !minted && <>
-                <div className="wallet-address">
-                  {walletAddress}
-                </div>
-                <div className="wallet-address-connected">
-                  CONNECTED
-                </div>
-                <div className="wallet-address-text">
-                  WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!
-                  HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH
-                </div>
-              </>}
-              <button
-                className="connect-wallet-button-mint"
-                onClick={() => {
-                  mintToken();
-                }}
-              >
-                MINT NOW!
-              </button>
-              {/* <div className="number-of-mint">
-                <span className="osake-font-apply">2500 </span>LEFT
-              </div> */}
-            </>
-          )
-        ) : (
-          <button
-            className="connect-wallet-button-initial"
-            onClick={connectWalletHandler}
-          >
-            <span>
-              <img style={{ marginRight: "12px", width: "30px", height: "30px" }} src={require("../assets/wallet.png")} />
-            </span>
-            CONNECT
-          </button>
-        )}
-      </div>
-    </div>
+            <button
+              className="connect-wallet-button-initial"
+              onClick={() => connectWallet()}
+            >
+              <span>
+                <img style={{ marginRight: "12px", width: "30px", height: "30px" }} src={require("../assets/wallet.png")} />
+              </span>
+              CONNECT
+            </button>
+          )}
+        </div>
+      </div>}
+    </>
   );
 };
 

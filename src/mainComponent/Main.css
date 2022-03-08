@@ -178,7 +178,7 @@ p span span {
 }
 
 .message {
-  width: 470px;
+  width: 350px;
   height: 47px;
   text-align: left;
   font: normal normal 600 32px/47px Oswald;
@@ -188,9 +188,16 @@ p span span {
   text-transform: uppercase;
   margin-top: 10%;
   margin-bottom: -15%;
-  margin-left: -1%;
-  padding-left: 8%;
+  margin-left: 14%;
+  padding-left: 5%;
   border-radius: 8px;
+}
+
+.loader {
+  color: #FFFD41;
+  font-size: 38px;
+  font-weight: 600;
+  height: 120vh;
 }
 
 .wallet-address-text {
