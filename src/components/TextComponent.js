@@ -65,15 +65,6 @@ const TextComponent = (props) => {
 
     setLoader(false);
   };
-  console.log(
-    "YES.....",
-    privateListed,
-    whiteListed,
-    genesisHolder,
-    privateBoughtInitiated,
-    whitelistBoughtInitiated,
-    genesisBoughtInitiated
-  );
 
   const connectWallet = async () => {
     console.log("CLICKED ON Connect wallet");
@@ -93,7 +84,15 @@ const TextComponent = (props) => {
   };
 
   const mintToken = async () => {
-    
+    console.log(
+      "YES.....",
+      privateListed,
+      whiteListed,
+      genesisHolder,
+      privateBoughtInitiated,
+      whitelistBoughtInitiated,
+      genesisBoughtInitiated
+    );
    if (privateListed) {
       console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
@@ -179,11 +178,11 @@ const TextComponent = (props) => {
           <div className="connect-mint-button">
             {connected ? (
               privateListed && privateBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED </div>
+                <div className="message">YOU HAVE ALREADY MINTED 1</div>
               ) : whiteListed && whitelistBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED </div>
+                <div className="message">YOU HAVE ALREADY MINTED 2</div>
               ) : genesisHolder && !genesisBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED </div>
+                <div className="message">YOU HAVE ALREADY MINTED 3</div>
               ) : connected && minted ? (
                 <>
                   <div className="wallet-address">{walletAddress}</div>
@@ -231,23 +230,19 @@ const TextComponent = (props) => {
                             MINT NOW!
                           </button>
                         </>
-                      ) : (
-                        <>
-                          {privateListed ? (
-                            <>
-                              <div className="wallet-address-text">
-                                You are in Private list
-                              </div>
-                              <button
-                                className="connect-wallet-button-mint"
-                                onClick={() => {
-                                  mintToken();
-                                }}
-                              >
-                                MINT NOW!
-                              </button>
-                            </>
-                          ) : (
+                      ) : privateListed ? <>
+                        <div className="wallet-address-text">
+                            You are in Private list
+                          </div>
+                          <button
+                            className="connect-wallet-button-mint"
+                            onClick={() => {
+                              mintToken();
+                            }}
+                          >
+                            MINT NOW!
+                          </button>
+                      </> : (
                         <>
                           <div className="wallet-address">{walletAddress}</div>
                           <div className="wallet-address-connected">
