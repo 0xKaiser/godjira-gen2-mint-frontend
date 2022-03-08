@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { connectWalletHandler, isPrivateTime, isGenesisTime ,isWhiteTime, isWhiteListed, isPrivateListed, isGenesisHolder, privateSale, whitelistSale, genesisSale, privateBought, whitelistBought, genesisBought, isPrivateTime } from "./../contract/contractInteraction";
+import { connectWalletHandler, isPrivateTime, isGenesisTime ,isWhiteTime, isWhiteListed, isPrivateListed, isGenesisHolder, privateSale, whitelistSale, genesisSale, privateBought, whitelistBought, genesisBought } from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
 
@@ -39,21 +39,21 @@ const TextComponent = (props) => {
     let whitelistBoughtRes = await whitelistBought(exactAddress)
     setWhitelistBoughtRes(whitelistBoughtRes)
     
-    // let isGenesisHolderRes = await isGenesisHolder(exactAddress)
-    // let genesisBoughtres = await genesisBought(genesisHolder)
+    let isGenesisHolderRes = await isGenesisHolder(exactAddress)
+    if(isGenesisHolderRes){
+      setGenesisHolder(isGenesisHolderRes)
+      let genesisBoughtres = await genesisBought(genesisHolder)
+      setGenesisBoughtres(genesisBoughtres)
+    }
 
     //Setting text MESSAGE 
     if(isPrivateListedRes)setTextMessage(msg.private)
     if(isWhiteListedRes)setTextMessage(msg.whiteList)
-
-    // if(isGenesisHolderRes)setTextMessage(msg.genesis)
+    if(isGenesisHolderRes)setTextMessage(msg.genesis)
 
     // let genesisClaimed = await genesisClaimed(genesisHolder)
     // let gen2Claimed = await gen2Claimed(genesisHolder)
-    //setGenesisHolder(isGenesisHolderRes)
     
-    
-    //setGenesisBoughtres(genesisBoughtres)
     setLoader(false)
   }
 
@@ -65,10 +65,10 @@ const TextComponent = (props) => {
   const msg = {
     private: "WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW! HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH",
     whiteList: "WELCOME WHITE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!",
-    genesis: ""
+    genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`
   }
 
-  const mintToken = () => {
+  const mintToken = async () => {
     console.log("YES.....", privateListed, whiteListed, genesisHolder, privateBoughtInitiated, whitelistBoughtInitiated, genesisBoughtInitiated)
     if (privateListed) {
       let privateTime = isPrivateTime()
@@ -79,7 +79,7 @@ const TextComponent = (props) => {
       if (privateBoughtInitiated) {
         alert("You have already minted")
       } else {
-        privateSale(exactAddress, privateListed)
+        await privateSale(exactAddress, privateListed)
         alert("Minted Successfully");
       }
     }
@@ -92,7 +92,7 @@ const TextComponent = (props) => {
       if (whitelistBoughtInitiated) {
         alert("You have already minted")
       } else {
-        whitelistSale(exactAddress, whiteListed)
+        await whitelistSale(exactAddress, whiteListed)
         alert("Minted Successfully");
       }
     }
@@ -105,7 +105,7 @@ const TextComponent = (props) => {
       if (genesisBoughtInitiated) {
         alert("You have already minted")
       } else {
-        genesisSale(exactAddress, genesisHolder)
+        await genesisSale(exactAddress, genesisHolder)
         alert("Minted Successfully");
       }
     }
