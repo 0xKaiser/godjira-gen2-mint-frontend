@@ -180,11 +180,11 @@ const TextComponent = (props) => {
           <div className="connect-mint-button">
             {connected ? (
               privateListed && privateBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 1</div>
+                <div className="message">YOU HAVE ALREADY MINTED</div>
               ) : whiteListed && whitelistBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 2</div>
+                <div className="message">YOU HAVE ALREADY MINTED</div>
               ) : genesisHolder && !genesisBoughtInitiated ? (
-                <div className="message">YOU HAVE ALREADY MINTED 3</div>
+                <div className="message">YOU HAVE ALREADY MINTED</div>
               ) : connected && minted ? (
                 <>
                   <div className="wallet-address">{walletAddress}</div>
