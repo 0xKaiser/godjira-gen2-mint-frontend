@@ -16,7 +16,7 @@ export const providerHandler = async () => {
     const account = await provider.listAccounts();
     address = account[0];
     const signer = provider.getSigner();
-    contractAddress = "0x0F71f3cC4643cAC976916A48cf98CA096D48B7D2"
+    contractAddress = "0xD16652fFfFc0717bDa8F02e0e1456526d820afc6"
     genesisContractAddress = "0x2286F6EF1DcD3365a9598fbD6786abD799fE3d96"
     contract = new ethers.Contract(contractAddress, abi, signer);
     genesisContract = new ethers.Contract(genesisContractAddress, genesisabi, signer);
@@ -121,11 +121,13 @@ export const isWhiteListed = async(walletAddress) => {
 }
 
 // is in privatelist?
-export const isPrivateListed = async(walletAddress) => {
+export const isPrivateListed = async (walletAddress) => {
+    console.log('calling isPrivateListed', walletAddress)
     try{
         const {data} = await axios.post(backend_url+"privatelist", {
             address: walletAddress
         })
+        //console.log(data.signature)
         return data.signature
     
     }

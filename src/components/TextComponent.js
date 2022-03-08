@@ -15,15 +15,21 @@ const TextComponent = (props) => {
           let strLastThree = addr.substr(addr.length - 5);
           let address = `${strFirstThree}...${strLastThree}`;
           setWalletAddress(address);
-
+          console.log('Calling functions')
           let isPrivateListedRes = await isPrivateListed(addr)
-          let privateBoughtRes = await privateBought(privateListed)
-          
+          console.log(isPrivateListedRes)
+          let privateBoughtRes = await privateBought(addr)
+          console.log(privateBoughtRes)
           let isWhiteListedRes = await isWhiteListed(addr)
-          let whitelistBoughtRes = await whitelistBought(whiteListed)
-
+          console.log(isWhiteListedRes)
+          let whitelistBoughtRes = await whitelistBought(addr)
+          console.log(whitelistBoughtRes)
           let isGenesisHolderRes = await isGenesisHolder(addr)
+          console.log(isGenesisHolderRes)
           let genesisBoughtres = await genesisBought(genesisHolder)
+          console.log(genesisBoughtres)
+
+          
 
           // let genesisClaimed = await genesisClaimed(genesisHolder)
           // let gen2Claimed = await gen2Claimed(genesisHolder)
