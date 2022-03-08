@@ -9,7 +9,7 @@ const TextComponent = (props) => {
 
   const [privateBoughtInitiated, setPrivateBought] = useState(false);
   const [whitelistBoughtInitiated, setWhitelistBoughtRes] = useState(false);
-  const [genesisBoughtInitiated, setGenesisBoughtres] = useState(false);
+  const [genesisBoughtInitiated, setGenesisBoughtRes] = useState([]);
 
   const [connected, setConnected] = useState(false);
 
@@ -42,8 +42,10 @@ const TextComponent = (props) => {
     let isGenesisHolderRes = await isGenesisHolder(exactAddress)
     if(isGenesisHolderRes){
       setGenesisHolder(isGenesisHolderRes)
-      let genesisBoughtres = await genesisBought(isGenesisHolderRes)
-      setGenesisBoughtres(genesisBoughtres)
+      let genesisBoughtRes = await genesisBought(isGenesisHolderRes)
+      console.log(genesisBoughtRes, "initial res")
+      setGenesisBoughtRes(genesisBoughtRes)
+      console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf")
     }
 
     //Setting text MESSAGE 
@@ -105,7 +107,7 @@ const TextComponent = (props) => {
       if (genesisBoughtInitiated) {
         alert("You have already minted")
       } else {
-        await genesisSale(exactAddress, genesisHolder)
+        await genesisSale(genesisHolder)
         alert("Minted Successfully");
       }
     }
