@@ -32,6 +32,11 @@ const TextComponent = (props) => {
   const [walletAddress, setWalletAddress] = useState("");
   const [exactAddress, setExactAddress] = useState("hbdcjbdwjbvjb");
 
+  //for Claiming
+  const [claimTimeActivated, setClaimTimeActivated] = useState(false);
+  const [gen2active, setGen2Active] = useState(false);
+  const [genesisActive, seGenesisActive] = useState(false)
+
   useEffect(() => {
     if (connected === true) {
       check();
@@ -86,10 +91,19 @@ const TextComponent = (props) => {
     genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
   };
 
+  //TODO
   const claim = () => {
-    //todo: update the condition
-    if("1 to 133") genesisClaimed()
-    if("341 to 440") gen2Claimed()
+    if (isGenesis()) {
+      let resp = genesisClaimed()
+      if (resp) {
+        genesisClaim()
+      }
+    } else if (isGen2Claim) {
+      let res = gen2Claimed()
+      if (res) {
+        gen2Claim()
+      }
+    }
   }
 
   const mintToken = async () => {
@@ -103,7 +117,7 @@ const TextComponent = (props) => {
       whitelistBoughtInitiated,
       genesisBoughtInitiated
     );
-   if (privateListed) {
+    if (privateListed) {
       console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
       if (!privateTime) {
@@ -167,20 +181,20 @@ const TextComponent = (props) => {
               <img
                 style={
                   privateBoughtInitiated ||
-                  whitelistBoughtInitiated ||
-                  genesisBoughtInitiated
+                    whitelistBoughtInitiated ||
+                    genesisBoughtInitiated
                     ? {
-                        width: "450px",
-                        height: "200px",
-                        marginLeft: "6%",
-                        marginTop: "auto",
-                      }
+                      width: "450px",
+                      height: "200px",
+                      marginLeft: "6%",
+                      marginTop: "auto",
+                    }
                     : {
-                        width: "450px",
-                        height: "200px",
-                        marginLeft: "29%",
-                        marginTop: "12%",
-                      }
+                      width: "450px",
+                      height: "200px",
+                      marginLeft: "29%",
+                      marginTop: "12%",
+                    }
                 }
                 src={require("../assets/Group 13081@2x.png")}
               />
@@ -203,7 +217,7 @@ const TextComponent = (props) => {
               ) : (
                 <>
                   {genesisBoughtInitiated &&
-                  genesisBoughtInitiated.length > 0 ? (
+                    genesisBoughtInitiated.length > 0 ? (
                     <>
                       <div className="wallet-address">{walletAddress}</div>
                       <div className="wallet-address-connected">CONNECTED</div>
@@ -224,6 +238,16 @@ const TextComponent = (props) => {
                       >
                         MINT NOW!
                       </button>
+                      {
+                        claimTimeActivated && gen2active || genesisActive ? <button
+                          className="connect-wallet-button-mint"
+                          onClick={() => {
+                            claim();
+                          }}
+                        >
+                          CLAIM
+                        </button> : ""
+                      }
                     </>
                   ) : (
                     <>
@@ -240,32 +264,39 @@ const TextComponent = (props) => {
                           >
                             MINT NOW!
                           </button>
+                          {
+                            claimTimeActivated && gen2active || genesisActive ? <button
+                              className="connect-wallet-button-mint"
+                              onClick={() => {
+                                claim();
+                              }}
+                            >
+                              CLAIM
+                            </button> : ""
+                          }
                         </>
                       ) : privateListed ? <>
                         <div className="wallet-address-text">
-                            You are in the private JIRAlist!
-                          </div>
-                          <button
-                            className="connect-wallet-button-mint"
-                            onClick={() => {
-                              mintToken();
-                            }}
-                          >
-                            MINT NOW!
-                          </button>
-                      </> : false ? <>
-                      {/*TODO: Update the false condition here */}
-                        <div className="wallet-address-text">
-                            You can claim gen2 now.
-                          </div>
-                          <button
+                          You are in the private JIRAlist!
+                        </div>
+                        <button
+                          className="connect-wallet-button-mint"
+                          onClick={() => {
+                            mintToken();
+                          }}
+                        >
+                          MINT NOW!
+                        </button>
+                        {
+                          claimTimeActivated && gen2active || genesisActive ? <button
                             className="connect-wallet-button-mint"
                             onClick={() => {
                               claim();
                             }}
                           >
-                            CLAIM
-                          </button>
+                           CLAIM
+                          </button> : ""
+                        }
                       </> : (
                         <>
                           <div className="wallet-address">{walletAddress}</div>
@@ -275,6 +306,16 @@ const TextComponent = (props) => {
                           <div className="wallet-address-text">
                             You are not eligible to mint.
                           </div>
+                          {
+                            claimTimeActivated && gen2active || genesisActive ? <button
+                              className="connect-wallet-button-mint"
+                              onClick={() => {
+                                claim();
+                              }}
+                            >
+                              CLAIM
+                            </button> : ""
+                          }
                         </>
                       )}
                     </>
@@ -299,33 +340,6 @@ const TextComponent = (props) => {
                 CONNECT
               </button>
             )}
-            {/* {connected ? (
-              !privateBoughtInitiated ||
-              whitelistBoughtInitiated ||
-              (!genesisBoughtInitiated &&
-                genesisBoughtInitiated.length === 0) ? (
-                <div className="message">YOU HAVE ALREADY MINTED</div>
-              ) : (
-                <></>
-              )
-            ) : (
-              <button
-                className="connect-wallet-button-initial"
-                onClick={() => connectWallet()}
-              >
-                <span>
-                  <img
-                    style={{
-                      marginRight: "12px",
-                      width: "30px",
-                      height: "30px",
-                    }}
-                    src={require("../assets/wallet.png")}
-                  />
-                </span>
-                CONNECT
-              </button>
-            )} */}
           </div>
         </div>
       )}
