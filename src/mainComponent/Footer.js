@@ -5,7 +5,7 @@ import twitter from "../assets/twitter.png";
 
 const links = [
   { src: twitter, url:"https://twitter.com/PGodjira", name: "Twitter" },
-  { src: opensea, url:"https://opensea.io/collection/projectgodjiragenesis", name: "Opensea" },
+  { src: opensea, url:"https://opensea.io/collection/project-godjira-gen-2", name: "Opensea" },
 ];
 const Footer = () => {
   return (

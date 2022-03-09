@@ -199,12 +199,12 @@ const TextComponent = (props) => {
                       <div className="wallet-address">{walletAddress}</div>
                       <div className="wallet-address-connected">CONNECTED</div>
                       <div className="wallet-address-text">
-                        Welcome Holder of Genesis Jira #
+                        Welcome, holder of Genesis JIRA #
                         {genesisBoughtInitiated.toString()}.
                       </div>
                       {privateListed && !privateBoughtInitiated && (
                         <div className="wallet-address-text">
-                          You are also in Private list
+                          You are also in the private JIRAlist!
                         </div>
                       )}
                       <button
@@ -221,7 +221,7 @@ const TextComponent = (props) => {
                       {whiteListed ? (
                         <>
                           <div className="wallet-address-text">
-                            You are in White list
+                            You are in the JIRAlist!
                           </div>
                           <button
                             className="connect-wallet-button-mint"
@@ -234,7 +234,7 @@ const TextComponent = (props) => {
                         </>
                       ) : privateListed ? <>
                         <div className="wallet-address-text">
-                            You are in Private list
+                            You are in the private JIRAlist!
                           </div>
                           <button
                             className="connect-wallet-button-mint"
@@ -251,7 +251,7 @@ const TextComponent = (props) => {
                             CONNECTED
                           </div>
                           <div className="wallet-address-text">
-                            You are not eligable to mint
+                            You are not eligible to mint.
                           </div>
                         </>
                       )}

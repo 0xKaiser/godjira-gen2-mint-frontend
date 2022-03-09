@@ -3,9 +3,9 @@ import abi from "./abi.json";
 import axios from "axios";
 import genesisabi from "./genesisabi.json";
 
-const PRIVATE_TIME = 1646718358;
-const WHITE_TIME = 1646718358;
-const GENESIS_TIME = 1646718358;
+const PRIVATE_TIME = 1646787600;
+const WHITE_TIME = 1646881200;
+const GENESIS_TIME = 1646794800;
 
 let address;
 let contractAddress;
@@ -20,8 +20,8 @@ export const providerHandler = async () => {
   const account = await provider.listAccounts();
   address = account[0];
   const signer = provider.getSigner();
-  contractAddress = "0xD16652fFfFc0717bDa8F02e0e1456526d820afc6"; //sale contract
-  genesisContractAddress = "0x2286F6EF1DcD3365a9598fbD6786abD799fE3d96"; //genesis contract
+  contractAddress = "0x17CBabee420494AD46bb53618793aad0A7fDcDD5"; //sale contract
+  genesisContractAddress = "0x9ada21A8bc6c33B49a089CFC1c24545d2a27cD81"; //genesis contract
   contract = new ethers.Contract(contractAddress, abi, signer);
   genesisContract = new ethers.Contract(
     genesisContractAddress,
@@ -50,7 +50,7 @@ export const privateSale = async (privateListedAddress, signature) => {
     await n.wait();
     alert("Successfully minted")
   } catch (e) {
-    alert("Transaction Failed")
+    alert("Oops! That didn't go through, please check error console for more details or let us know on our Discord!",e);
   }
 };
 
@@ -66,7 +66,7 @@ export const whitelistSale = async (whitelistedAddress, signature) => {
     await n.wait();
     alert("Successfully minted")
   } catch (e) {
-    alert("Transaction Failed")
+    alert("Oops! That didn't go through, please check error console for more details or let us know on our Discord!",e);
   }
 };
 
@@ -81,7 +81,7 @@ export const genesisSale = async (tokenIds) => {
     await n.wait();
     alert("Successfully minted")
   } catch (e) {
-    alert("Transaction Failed")
+    alert("Oops! That didn't go through, please check error console for more details or let us know on our Discord!",e);
   }
 };
 
