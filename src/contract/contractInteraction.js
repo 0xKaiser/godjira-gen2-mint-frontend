@@ -6,6 +6,7 @@ import genesisabi from "./genesisabi.json";
 const PRIVATE_TIME = 1646787600;
 const WHITE_TIME = 1646881200;
 const GENESIS_TIME = 1646794800;
+const CLAIM_TIME = 1646794800;
 
 let address;
 let contractAddress;
@@ -129,15 +130,29 @@ export const whitelistBought = async (walletAddress) => {
 
 //claim mapping
 //wallet already claimed genesis? return bool
-export const genesisClaimed = async (tokenId) => {
-  const n = await contract.genesisClaimed(tokenId);
-  return n;
+export const genesisClaimed = async (tokenIds) => {
+  let unclaimed = [];
+  for (let i in tokenIds) {
+    const n = await contract.genesisClaimed(tokenIds[i]);
+    if (!n) {
+      unclaimed.push(tokenIds[i]);
+    }
+  }
+  console.log(unclaimed);
+  return unclaimed;
 };
 
 //wallet already claimed gen2? return bool
-export const gen2Claimed = async (tokenId) => {
-  const n = await contract.gen2Claimed(tokenId);
-  return n;
+export const gen2Claimed = async (tokenIds) => {
+  let unclaimed = [];
+  for (let i in tokenIds) {
+    const n = await contract.gen2Claimed(tokenIds[i]);
+    if (!n) {
+      unclaimed.push(tokenIds[i]);
+    }
+  }
+  console.log(unclaimed);
+  return unclaimed;
 };
 
 //is in list checker functions
@@ -204,6 +219,14 @@ export const isWhiteTime = () => {
 
 export const isGenesisTime = () => {
   if (Math.floor(Date.now() / 1000) >= GENESIS_TIME) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const isClaimTime = () => {
+  if (Math.floor(Date.now() / 1000) >= CLAIM_TIME) {
     return true;
   } else {
     return false;
