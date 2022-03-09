@@ -13,6 +13,9 @@ import {
   privateBought,
   whitelistBought,
   genesisBought,
+  genesisClaim,
+  gen2Claimed,
+  genesisClaimed,
 } from "./../contract/contractInteraction";
 
 const TextComponent = (props) => {
@@ -82,6 +85,12 @@ const TextComponent = (props) => {
     whiteList: "WELCOME WHITE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!",
     genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
   };
+
+  const claim = () => {
+    //todo: update the condition
+    if("1 to 133") genesisClaimed()
+    if("341 to 440") gen2Claimed()
+  }
 
   const mintToken = async () => {
     setLoader(true)
@@ -243,6 +252,19 @@ const TextComponent = (props) => {
                             }}
                           >
                             MINT NOW!
+                          </button>
+                      </> : false ? <>
+                      {/*TODO: Update the false condition here */}
+                        <div className="wallet-address-text">
+                            You can claim gen2 now.
+                          </div>
+                          <button
+                            className="connect-wallet-button-mint"
+                            onClick={() => {
+                              claim();
+                            }}
+                          >
+                            CLAIM
                           </button>
                       </> : (
                         <>
