@@ -89,8 +89,8 @@ export const genesisSale = async (tokenIds) => {
 //claim functions
 
 //claim function for private sales buyers (pass array of tokenIds)
-export const privateSalesClaim = async (tokenIds) => {
-  const n = await contract.privateSale(tokenIds);
+export const gen2Claim = async (tokenIds) => {
+  const n = await contract.privateSalesClaim(tokenIds);
   await n.wait();
 };
 
