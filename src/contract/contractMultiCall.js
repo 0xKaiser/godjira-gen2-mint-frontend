@@ -32,6 +32,12 @@ export async function call(address) {
     }
     
   }
-  return nft_array
+  if(nft_array.length===0){
+      return false
+  }
+  else{
+    return nft_array
+
+  }
 }
 
