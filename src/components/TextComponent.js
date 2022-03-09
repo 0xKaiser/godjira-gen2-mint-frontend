@@ -17,6 +17,7 @@ import {
   gen2Claimed,
   genesisClaimed,
 } from "./../contract/contractInteraction";
+import {call} from "./../contract/contractMultiCall"
 
 const TextComponent = (props) => {
   const [privateListed, setPrivateListed] = useState(false);
@@ -35,6 +36,7 @@ const TextComponent = (props) => {
   useEffect(() => {
     if (connected === true) {
       check();
+      
     }
   }, [connected]);
   console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf");
@@ -65,7 +67,7 @@ const TextComponent = (props) => {
 
     // let genesisClaimed = await genesisClaimed(genesisHolder)
     // let gen2Claimed = await gen2Claimed(genesisHolder)
-
+    call(exactAddress);
     setLoader(false);
   };
 
