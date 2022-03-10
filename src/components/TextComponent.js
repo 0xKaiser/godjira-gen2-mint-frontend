@@ -115,9 +115,9 @@ const TextComponent = (props) => {
     console.log(genesisClaimedList, "Claim Filter")
     console.log(gen2ClaimedList, "Gen 2 Filter")
     if(claimTimeActivated){
-      if(genesisHolder){
+      if(genesisHolder && genesisClaimedList.length>0){
         genesisClaim(genesisClaimedList)
-      }else if(gen2active){
+      }else if(gen2active && gen2ClaimedList.length>0){
         gen2Claim(gen2ClaimedList)
       }
     }
