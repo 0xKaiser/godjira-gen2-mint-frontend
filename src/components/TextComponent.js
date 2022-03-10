@@ -83,9 +83,9 @@ const TextComponent = (props) => {
       setClaimTimeActivated(true)
     }
 
-    // let genesisClaimedList = await genesisClaimed(genesisHolder)
+    let genesisClaimedList = await genesisClaimed(genesisHolder)
     // console.log(genesisClaimedList, "FILTER")
-    // setGenesisClaimFilter(genesisClaimedList)
+    setGenesisClaimFilter(genesisClaimedList)
     // let gen2ClaimedList = await gen2Claimed(genesisHolder)
     // setGen2ClaimFilter(gen2ClaimedList)
     
@@ -257,7 +257,7 @@ const TextComponent = (props) => {
                         MINT NOW!
                       </button>
                       {
-                        claimTimeActivated && gen2active || genesisHolder ? <button
+                        claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
                           className="connect-wallet-button-mint"
                           style = {{marginTop:"2%"}}
                           onClick={() => {
@@ -284,7 +284,7 @@ const TextComponent = (props) => {
                             MINT NOW!
                           </button>
                           {
-                            claimTimeActivated && gen2active || genesisHolder ? <button
+                            claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
                               className="connect-wallet-button-mint"
                               style = {{marginTop:"2%"}}
                               onClick={() => {
@@ -308,7 +308,7 @@ const TextComponent = (props) => {
                           MINT NOW!
                         </button>
                         {
-                          claimTimeActivated && gen2active || genesisHolder ? <button
+                          claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
                             className="connect-wallet-button-mint"
                             style = {{marginTop:"2%"}}
                             onClick={() => {
@@ -328,7 +328,7 @@ const TextComponent = (props) => {
                             You are not eligible to mint.
                           </div>
                           {
-                            claimTimeActivated && gen2active || genesisHolder ? <button
+                            claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
                               className="connect-wallet-button-mint"
                               style = {{marginTop:"2%"}}
                               onClick={() => {
