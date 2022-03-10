@@ -19,7 +19,7 @@ import {
   isClaimTime,
   gen2Claim
 } from "./../contract/contractInteraction";
-import {call} from "./../contract/contractMultiCall"
+import { call } from "./../contract/contractMultiCall"
 
 const TextComponent = (props) => {
   const [privateListed, setPrivateListed] = useState(false);
@@ -74,12 +74,12 @@ const TextComponent = (props) => {
 
     const resCall = call(exactAddress);
 
-    if(resCall) {
+    if (resCall) {
       setGen2Active(true)
     }
 
     const claimTimeCheck = isClaimTime()
-    if(claimTimeCheck){
+    if (claimTimeCheck) {
       setClaimTimeActivated(true)
     }
 
@@ -88,7 +88,7 @@ const TextComponent = (props) => {
     setGenesisClaimFilter(genesisClaimedList)
     // let gen2ClaimedList = await gen2Claimed(genesisHolder)
     // setGen2ClaimFilter(gen2ClaimedList)
-    
+
     setLoader(false);
   };
 
@@ -115,10 +115,10 @@ const TextComponent = (props) => {
     let gen2ClaimedList = []
     console.log(genesisClaimedList, "Claim Filter")
     //console.log(gen2ClaimedList, "Gen 2 Filter")
-    if(claimTimeActivated){
-      if(genesisHolder && genesisClaimedList.length>0){
+    if (claimTimeActivated) {
+      if (genesisHolder && genesisClaimedList.length > 0) {
         genesisClaim(genesisClaimedList)
-      }else if(gen2active && gen2ClaimedList.length>0){
+      } else if (gen2active && gen2ClaimedList.length > 0) {
         gen2Claim(gen2ClaimedList)
       }
     }
@@ -257,15 +257,17 @@ const TextComponent = (props) => {
                         MINT NOW!
                       </button>
                       {
-                        claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
-                          className="connect-wallet-button-mint"
-                          style = {{marginTop:"2%"}}
-                          onClick={() => {
-                            claim();
-                          }}
-                        >
-                          CLAIM
-                        </button> : ""
+                        genesisClaimFilter.length !== 0 ? <>
+                          {claimTimeActivated && gen2active || genesisHolder ? <button
+                            className="connect-wallet-button-mint"
+                            style={{ marginTop: "2%" }}
+                            onClick={() => {
+                              claim();
+                            }}
+                          >
+                            CLAIM
+                          </button> : ""}
+                        </> : ""
                       }
                     </>
                   ) : (
@@ -284,15 +286,17 @@ const TextComponent = (props) => {
                             MINT NOW!
                           </button>
                           {
-                            claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
-                              className="connect-wallet-button-mint"
-                              style = {{marginTop:"2%"}}
-                              onClick={() => {
-                                claim();
-                              }}
-                            >
-                              CLAIM
-                            </button> : ""
+                            genesisClaimFilter.length !== 0 ? <>
+                              {claimTimeActivated && gen2active || genesisHolder ? <button
+                                className="connect-wallet-button-mint"
+                                style={{ marginTop: "2%" }}
+                                onClick={() => {
+                                  claim();
+                                }}
+                              >
+                                CLAIM
+                              </button> : ""}
+                            </> : ""
                           }
                         </>
                       ) : privateListed ? <>
@@ -308,15 +312,17 @@ const TextComponent = (props) => {
                           MINT NOW!
                         </button>
                         {
-                          claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
-                            className="connect-wallet-button-mint"
-                            style = {{marginTop:"2%"}}
-                            onClick={() => {
-                              claim();
-                            }}
-                          >
-                            CLAIM
-                          </button> : ""
+                          genesisClaimFilter.length !== 0 ? <>
+                            {claimTimeActivated && gen2active || genesisHolder ? <button
+                              className="connect-wallet-button-mint"
+                              style={{ marginTop: "2%" }}
+                              onClick={() => {
+                                claim();
+                              }}
+                            >
+                              CLAIM
+                            </button> : ""}
+                          </> : ""
                         }
                       </> : (
                         <>
@@ -328,15 +334,17 @@ const TextComponent = (props) => {
                             You are not eligible to mint.
                           </div>
                           {
-                            claimTimeActivated && genesisClaimFilter.length > 0 && gen2active || genesisHolder ? <button
-                              className="connect-wallet-button-mint"
-                              style = {{marginTop:"2%"}}
-                              onClick={() => {
-                                claim();
-                              }}
-                            >
-                              CLAIM
-                            </button> : ""
+                            genesisClaimFilter.length !== 0 ? <>
+                              {claimTimeActivated && gen2active || genesisHolder ? <button
+                                className="connect-wallet-button-mint"
+                                style={{ marginTop: "2%" }}
+                                onClick={() => {
+                                  claim();
+                                }}
+                              >
+                                CLAIM
+                              </button> : ""}
+                            </> : ""
                           }
                         </>
                       )}
