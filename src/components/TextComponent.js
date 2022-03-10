@@ -111,9 +111,10 @@ const TextComponent = (props) => {
 
   const claim = async () => {
     let genesisClaimedList = await genesisClaimed(genesisHolder)
-    let gen2ClaimedList = await gen2Claimed(genesisHolder)
+    //let gen2ClaimedList = await gen2Claimed(genesisHolder)
+    let gen2ClaimedList = []
     console.log(genesisClaimedList, "Claim Filter")
-    console.log(gen2ClaimedList, "Gen 2 Filter")
+    //console.log(gen2ClaimedList, "Gen 2 Filter")
     if(claimTimeActivated){
       if(genesisHolder && genesisClaimedList.length>0){
         genesisClaim(genesisClaimedList)
