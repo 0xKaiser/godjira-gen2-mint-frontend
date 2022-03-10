@@ -46,7 +46,7 @@ const TextComponent = (props) => {
       check();
     }
   }, [connected]);
-  console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf");
+  //console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf");
 
   const check = async () => {
     setLoader(true);
@@ -63,7 +63,7 @@ const TextComponent = (props) => {
     if (isGenesisHolderRes) {
       setGenesisHolder(isGenesisHolderRes);
       let genesisBoughtRes = await genesisBought(isGenesisHolderRes);
-      console.log(genesisBoughtRes, "initial res");
+      //console.log(genesisBoughtRes, "initial res");
       setGenesisBoughtRes(genesisBoughtRes);
      
     }
@@ -95,7 +95,7 @@ const TextComponent = (props) => {
     
 
   const connectWallet = async () => {
-    console.log("CLICKED ON Connect wallet");
+    //console.log("CLICKED ON Connect wallet");
     await connectWalletHandler(
       setLoader,
       setConnected,
@@ -113,9 +113,9 @@ const TextComponent = (props) => {
 
   const claim = async () => {
     let genesisClaimedList = await genesisClaimed(genesisHolder)
-    console.log(gen2active,'gen2active')
+    //console.log(gen2active,'gen2active')
     let gen2ClaimedList = await gen2Claimed(gen2active)
-    console.log('gen2',gen2ClaimedList)
+    //console.log('gen2',gen2ClaimedList)
     //let gen2ClaimedList = []
     if (claimTimeActivated) {
       if (genesisHolder) {
@@ -137,17 +137,17 @@ const TextComponent = (props) => {
 
   const mintToken = async () => {
     setLoader(true)
-    console.log(
-      "YES.....",
-      privateListed,
-      whiteListed,
-      genesisHolder,
-      privateBoughtInitiated,
-      whitelistBoughtInitiated,
-      genesisBoughtInitiated
-    );
+    // //console.log(
+    //   "YES.....",
+    //   privateListed,
+    //   whiteListed,
+    //   genesisHolder,
+    //   privateBoughtInitiated,
+    //   whitelistBoughtInitiated,
+    //   genesisBoughtInitiated
+    // );
     if (privateListed) {
-      console.log(privateListed, "privateListed");
+      //console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
       if (!privateTime) {
         alert("Private sale not started.");
@@ -176,7 +176,7 @@ const TextComponent = (props) => {
       }
     }
     else if (genesisHolder) {
-      console.log(genesisHolder, "genesisHolder");
+      //console.log(genesisHolder, "genesisHolder");
       let genesisTime = isGenesisTime();
       if (!genesisTime) {
         alert("Genesis sale not started.");
@@ -192,7 +192,7 @@ const TextComponent = (props) => {
     }
     setLoader(false)
   };
-  console.log(whiteListed, "whiteListed");
+  //console.log(whiteListed, "whiteListed");
 
   return (
     <>
