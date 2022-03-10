@@ -26,12 +26,13 @@ export async function call(address) {
   console.log(rec_call)
   let nft_array =[]
   for(let i = 340; i <440; i++) {
-    if(call_array[i]==address){
+    if(rec_call[i]==address){
         nft_array.push(i)
         console.log(i)
     }
     
   }
+  console.log('multicallarray',nft_array)
   if(nft_array.length===0){
       return false
   }

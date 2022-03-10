@@ -72,10 +72,10 @@ const TextComponent = (props) => {
     if (isWhiteListedRes) setTextMessage(msg.whiteList);
     if (isGenesisHolderRes) setTextMessage(msg.genesis);
 
-    const resCall = call(exactAddress);
+    const resCall = await call(exactAddress);
 
     if (resCall) {
-      setGen2Active(true)
+      setGen2Active(resCall)
     }
 
     const claimTimeCheck = isClaimTime()
@@ -113,8 +113,10 @@ const TextComponent = (props) => {
 
   const claim = async () => {
     let genesisClaimedList = await genesisClaimed(genesisHolder)
-    //let gen2ClaimedList = await gen2Claimed(genesisHolder)
-    let gen2ClaimedList = []
+    console.log(gen2active,'gen2active')
+    let gen2ClaimedList = await gen2Claimed(gen2active)
+    console.log('gen2',gen2ClaimedList)
+    //let gen2ClaimedList = []
     if (claimTimeActivated) {
       if (genesisHolder) {
         if (genesisClaimedList.length > 0) {
