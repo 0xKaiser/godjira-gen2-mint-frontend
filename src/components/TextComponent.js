@@ -83,10 +83,11 @@ const TextComponent = (props) => {
       setClaimTimeActivated(true)
     }
 
-    let genesisClaimedList = await genesisClaimed(genesisHolder)
-    setGenesisClaimFilter(genesisClaimedList)
-    let gen2ClaimedList = await gen2Claimed(genesisHolder)
-    setGen2ClaimFilter(gen2ClaimedList)
+    // let genesisClaimedList = await genesisClaimed(genesisHolder)
+    // console.log(genesisClaimedList, "FILTER")
+    // setGenesisClaimFilter(genesisClaimedList)
+    // let gen2ClaimedList = await gen2Claimed(genesisHolder)
+    // setGen2ClaimFilter(gen2ClaimedList)
     
     setLoader(false);
   };
@@ -108,12 +109,16 @@ const TextComponent = (props) => {
     genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
   };
 
-  const claim = () => {
+  const claim = async () => {
+    let genesisClaimedList = await genesisClaimed(genesisHolder)
+    let gen2ClaimedList = await gen2Claimed(genesisHolder)
+    console.log(genesisClaimedList, "Claim Filter")
+    console.log(gen2ClaimedList, "Gen 2 Filter")
     if(claimTimeActivated){
       if(genesisHolder){
-        genesisClaim(genesisClaimFilter)
+        genesisClaim(genesisClaimedList)
       }else if(gen2active){
-        gen2Claim(gen2ClaimFilter)
+        gen2Claim(gen2ClaimedList)
       }
     }
   }
