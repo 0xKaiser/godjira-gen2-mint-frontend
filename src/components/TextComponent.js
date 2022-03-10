@@ -117,15 +117,13 @@ const TextComponent = (props) => {
       if (genesisHolder) {
         if (genesisClaimedList.length > 0) {
           genesisClaim(genesisClaimedList)
-        } else {
-          setClaimTimeActivated(false)
+        } else if(gen2ClaimedList.length === 0){
           alert("You have no genesis tokens to claim")
         }
       } else if (gen2active) {
         if (gen2ClaimedList.length > 0) {
           gen2Claim(gen2ClaimedList)
-        } else {
-          setClaimTimeActivated(false)
+        } else if(gen2ClaimedList.length === 0){
           alert("You have no genesis tokens to claim")
         }
 
