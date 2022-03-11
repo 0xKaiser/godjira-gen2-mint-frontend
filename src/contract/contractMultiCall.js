@@ -9,6 +9,8 @@ import gen2abi from './gen2abi.json';
 const gen2address = '0xEDc3AD89f7b0963fe23D714B34185713706B815b';
 
 export async function call(address) {
+
+  console.log(address, "ADDRESS IN CALL FUCTION")
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const ethcallProvider = new Provider(provider);
 
@@ -26,13 +28,13 @@ export async function call(address) {
   console.log(rec_call)
   let nft_array =[]
   for(let i = 340; i <440; i++) {
-    if(rec_call[i]==address){
+    if(rec_call[i]===address){
         nft_array.push(i)
-        //console.log(i)
+        console.log(i)
     }
     
   }
-  //console.log('multicallarray',nft_array)
+  console.log('multicallarray',nft_array)
   if(nft_array.length===0){
       return false
   }
