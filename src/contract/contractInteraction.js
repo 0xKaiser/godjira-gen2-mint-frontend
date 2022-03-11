@@ -34,7 +34,6 @@ export const providerHandler = async () => {
     genesisabi,
     signer
   );
-  //console.log("contracts init done");
 };
 
 //wallet address
@@ -123,7 +122,6 @@ export const genesisBought = async (tokenIds) => {
       unclaimed.push(tokenIds[i]);
     }
   }
-  console.log(unclaimed);
   return unclaimed;
 };
 
@@ -143,13 +141,11 @@ export const genesisClaimed = async (tokenIds) => {
       unclaimed.push(tokenIds[i]);
     }
   }
-  console.log(unclaimed);
   return unclaimed;
 };
 
 //wallet already claimed gen2? return bool
 export const gen2Claimed = async (tokenIds) => {
-  console.log('gen2claimed',tokenIds)
   let unclaimed = [];
   for (let i in tokenIds) {
     const n = await contract.gen2Claimed(tokenIds[i]);
@@ -157,7 +153,6 @@ export const gen2Claimed = async (tokenIds) => {
       unclaimed.push(tokenIds[i]);
     }
   }
-  console.log(unclaimed);
   return unclaimed;
 };
 
@@ -171,30 +166,24 @@ export const isWhiteListed = async (walletAddress) => {
     });
     return data.signature;
   } catch (err) {
-    //console.log(err);
     return false;
   }
 };
 
 // is in privatelist?
 export const isPrivateListed = async (walletAddress) => {
-  console.log("calling isPrivateListed", walletAddress);
   try {
     const { data } = await axios.post(backend_url + "privatelist", {
       address: walletAddress,
     });
-    console.log(data.signature)
     return data.signature;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
 
 export const isGenesisHolder = async (walletAddress) => {
-  console.log(walletAddress)
   const nftCount = await genesisContract.balanceOf(walletAddress);
-  console.log(nftCount.toNumber());
   if (nftCount.toNumber() === 0) {
     return false;
   } else {
@@ -203,7 +192,6 @@ export const isGenesisHolder = async (walletAddress) => {
       const n = await genesisContract.tokenOfOwnerByIndex(walletAddress, i);
       nft_list.push(n.toNumber());
     }
-    console.log(nft_list);
     return nft_list;
   }
 };
@@ -254,7 +242,6 @@ export const connectWalletHandler = async (
         await providerHandler();
         const addr = getAddress();
         setExactAddress(addr);
-        console.log(addr);
         let strFirstThree = addr.substring(0, 5);
         let strLastThree = addr.substr(addr.length - 5);
         let address = `${strFirstThree}...${strLastThree}`;

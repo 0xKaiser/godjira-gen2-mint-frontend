@@ -48,7 +48,6 @@ const TextComponent = (props) => {
       // checkClaim();
     }
   }, [connected]);
-  console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf");
 
   const check = async () => {
     setLoader(true);
@@ -62,14 +61,11 @@ const TextComponent = (props) => {
     setWhitelistBoughtRes(whitelistBoughtRes);
 
     let isGenesisHolderRes = await isGenesisHolder(exactAddress);
-    console.log(isGenesisHolderRes);
     if (isGenesisHolderRes) {
       let genesisClaimedList = await genesisClaimed(isGenesisHolderRes);
-      console.log(genesisClaimedList);
       setClaimedList(genesisClaimedList);
       setGenesisHolder(isGenesisHolderRes);
       let genesisBoughtRes = await genesisBought(isGenesisHolderRes);
-      console.log(genesisBoughtRes, "initial res");
       setGenesisBoughtRes(genesisBoughtRes);
     }
     //Setting text MESSAGE
@@ -89,7 +85,6 @@ const TextComponent = (props) => {
     if (claimTimeCheck) {
       setClaimTimeActivated(true);
     }
-    console.log(privateListed, "PRIVATE LISTED LIST");
     setLoader(false);
   };
 
@@ -106,20 +101,10 @@ const TextComponent = (props) => {
     private:
       "WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW! HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH",
     whiteList: "WELCOME WHITE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!",
-    genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
-  };
-
-  const checkClaim = async () => {
-    let genesisClaimedList = await genesisClaimed(genesisHolder);
-    setClaimedList(genesisClaimedList);
-    console.log(gen2active, "gen2active");
-    let gen2ClaimedList = await gen2Claimed(gen2active);
-    setGen2ClaimedList(gen2ClaimedList);
-    console.log("gen2", gen2ClaimedList);
+    genesis: `Welcome HODLer of Genesis Jira. You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
   };
   // checkClaim();
   const claim = async () => {
-    console.log(claimList, gen2ClaimList);
     if (claimTimeActivated) {
       // This will check both scenario if user satisfied both
       if (genesisHolder && gen2active) {
@@ -162,7 +147,6 @@ const TextComponent = (props) => {
   const mintToken = async () => {
     setLoader(true);
     if (privateListed) {
-      console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
       if (!privateTime) {
         alert("Private sale not started.");
@@ -189,7 +173,6 @@ const TextComponent = (props) => {
         //alert("Minted Successfully");
       }
     } else if (genesisHolder) {
-      console.log(genesisHolder, "genesisHolder");
       let genesisTime = isGenesisTime();
       if (!genesisTime) {
         alert("Genesis sale not started.");
@@ -205,7 +188,6 @@ const TextComponent = (props) => {
     }
     setLoader(false);
   };
-  console.log(whiteListed, "whiteListed");
 
   return (
     <>
@@ -253,7 +235,7 @@ const TextComponent = (props) => {
                     claim();
                   }}
                 >
-                  CLAIM 1
+                  CLAIM
                 </button>
               ) : gen2active && gen2ClaimList?.length > 0 ? (
                 <button
@@ -263,7 +245,7 @@ const TextComponent = (props) => {
                     claim();
                   }}
                 >
-                  CLAIM 2
+                  CLAIM
                 </button>
               ) : genesisHolder && claimList?.length > 0 ? (
                 <button
@@ -273,7 +255,7 @@ const TextComponent = (props) => {
                     claim();
                   }}
                 >
-                  CLAIM 3
+                  CLAIM
                 </button>
               ) : (
                 <></>

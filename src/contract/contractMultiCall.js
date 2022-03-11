@@ -10,7 +10,6 @@ const gen2address = '0xEDc3AD89f7b0963fe23D714B34185713706B815b';
 
 export async function call(address) {
 
-  console.log(address, "ADDRESS IN CALL FUCTION")
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const ethcallProvider = new Provider(provider);
 
@@ -25,16 +24,13 @@ export async function call(address) {
   }
 
   const rec_call = await ethcallProvider.all(call_array);
-  console.log(rec_call)
   let nft_array =[]
   for(let i = 0; i <100; i++) {
     if(rec_call[i]===address){
         nft_array.push(i+340)
-        console.log(i+340)
     }
     
   }
-  console.log('multicallarray',nft_array)
   if(nft_array.length===0){
       return false
   }
