@@ -27,10 +27,10 @@ export async function call(address) {
   const rec_call = await ethcallProvider.all(call_array);
   console.log(rec_call)
   let nft_array =[]
-  for(let i = 340; i <440; i++) {
+  for(let i = 0; i <100; i++) {
     if(rec_call[i]===address){
-        nft_array.push(i)
-        console.log(i)
+        nft_array.push(i+340)
+        console.log(i+340)
     }
     
   }
