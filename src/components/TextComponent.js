@@ -101,7 +101,7 @@ const TextComponent = (props) => {
     private:
       "WELCOME PRIVATE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW! HOLD YOUR JIRA TO CLAIM A FREE JIRA AFTER 12 MARCH",
     whiteList: "WELCOME WHITE LIST MEMBER. YOU CAN MINT A GEN2 GODJIRA NOW!",
-    genesis: `Welcome HODLer of Genesis Jira. You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
+    genesis: `Welcome HODLer of Genesis Jira.`,
   };
   // checkClaim();
   const claim = async () => {
