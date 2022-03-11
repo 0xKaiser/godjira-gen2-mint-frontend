@@ -192,6 +192,7 @@ export const isPrivateListed = async (walletAddress) => {
 };
 
 export const isGenesisHolder = async (walletAddress) => {
+  console.log(walletAddress)
   const nftCount = await genesisContract.balanceOf(walletAddress);
   console.log(nftCount.toNumber());
   if (nftCount.toNumber() === 0) {

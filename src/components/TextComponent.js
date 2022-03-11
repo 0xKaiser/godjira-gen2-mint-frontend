@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect } from "react";
 import {
   connectWalletHandler,
@@ -17,9 +19,9 @@ import {
   gen2Claimed,
   genesisClaimed,
   isClaimTime,
-  gen2Claim
+  gen2Claim,
 } from "./../contract/contractInteraction";
-import { call } from "./../contract/contractMultiCall"
+import { call } from "./../contract/contractMultiCall";
 
 const TextComponent = (props) => {
   const [privateListed, setPrivateListed] = useState(false);
@@ -34,16 +36,16 @@ const TextComponent = (props) => {
   const [loader, setLoader] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
   const [exactAddress, setExactAddress] = useState("hbdcjbdwjbvjb");
-  const [genesisClaimFilter, setGenesisClaimFilter] = useState(false)
-  const [gen2ClaimFilter, setGen2ClaimFilter] = useState(false)
-
+  const [claimList, setClaimedList] = useState(null);
+  const [gen2ClaimList, setGen2ClaimedList] = useState(null);
   //for Claiming
-  const [claimTimeActivated, setClaimTimeActivated] = useState(false);
+  const [claimTimeActivated, setClaimTimeActivated] = useState(true);
   const [gen2active, setGen2Active] = useState(false);
 
   useEffect(() => {
     if (connected === true) {
       check();
+      // checkClaim();
     }
   }, [connected]);
   console.log(genesisBoughtInitiated, "hgfdsdfghjgyftdrf");
@@ -60,7 +62,11 @@ const TextComponent = (props) => {
     setWhitelistBoughtRes(whitelistBoughtRes);
 
     let isGenesisHolderRes = await isGenesisHolder(exactAddress);
+    console.log(isGenesisHolderRes);
     if (isGenesisHolderRes) {
+      let genesisClaimedList = await genesisClaimed(isGenesisHolderRes);
+      console.log(genesisClaimedList);
+      setClaimedList(genesisClaimedList);
       setGenesisHolder(isGenesisHolderRes);
       let genesisBoughtRes = await genesisBought(isGenesisHolderRes);
       console.log(genesisBoughtRes, "initial res");
@@ -74,19 +80,18 @@ const TextComponent = (props) => {
     const resCall = await call(exactAddress);
 
     if (resCall) {
-      setGen2Active(resCall)
+      let gen2ClaimedList = await gen2Claimed(resCall);
+      setGen2ClaimedList(gen2ClaimedList);
+      setGen2Active(resCall);
     }
 
-    const claimTimeCheck = isClaimTime()
+    const claimTimeCheck = isClaimTime();
     if (claimTimeCheck) {
-      setClaimTimeActivated(true)
+      setClaimTimeActivated(true);
     }
-
-    console.log(privateListed, "PRIVATE LISTED LIST")
+    console.log(privateListed, "PRIVATE LISTED LIST");
     setLoader(false);
-
   };
-
 
   const connectWallet = async () => {
     await connectWalletHandler(
@@ -104,25 +109,58 @@ const TextComponent = (props) => {
     genesis: `Welcome HODLer of Genesis Jira ${genesisHolder} . You have already minted gen2 Jiras HOLD your Genesis Jira to claim a free gen2 Jira`,
   };
 
+  const checkClaim = async () => {
+    let genesisClaimedList = await genesisClaimed(genesisHolder);
+    setClaimedList(genesisClaimedList);
+    console.log(gen2active, "gen2active");
+    let gen2ClaimedList = await gen2Claimed(gen2active);
+    setGen2ClaimedList(gen2ClaimedList);
+    console.log("gen2", gen2ClaimedList);
+  };
+  // checkClaim();
   const claim = async () => {
-    let genesisClaimedList = await genesisClaimed(genesisHolder)
-    console.log(gen2active,'gen2active')
-    let gen2ClaimedList = await gen2Claimed(gen2active)
-    console.log('gen2', gen2ClaimedList)
-    if(claimTimeActivated && genesisHolder && gen2active ){
-      genesisClaim(genesisClaimedList)
-      gen2Claim(gen2ClaimedList)
-    }else if(claimTimeActivated && genesisHolder && genesisClaimedList.length > 0){
-      genesisClaim(genesisClaimedList)
-    }else if (claimTimeActivated && gen2active && gen2ClaimedList.length > 0){
-      gen2Claim(gen2ClaimedList)
-    }else{
-      alert("You have no genesis tokens to claim")
+    console.log(claimList, gen2ClaimList);
+    if (claimTimeActivated) {
+      // This will check both scenario if user satisfied both
+      if (genesisHolder && gen2active) {
+        try {
+          setLoader(true);
+          await genesisClaim(claimList);
+          await gen2Claim(gen2ClaimList);
+          setLoader(false);
+        } catch (error) {
+          setLoader(false);
+        }
+      }
+      // This will check only if genisis user
+      else if (genesisHolder && claimList?.length > 0) {
+        try {
+          setLoader(true);
+          await genesisClaim(claimList);
+          setLoader(false);
+        } catch (error) {
+          setLoader(false);
+        }
+      }
+      // This'll check only private... user
+      else if (gen2active && gen2ClaimList?.length > 0) {
+        try {
+          setLoader(true);
+          await gen2Claim(gen2ClaimList);
+          setLoader(false);
+        } catch (error) {
+          setLoader(false);
+        }
+      } else {
+        alert("You have no genesis tokens to claim");
+      }
+    } else {
+      alert(`Time not activated!!!`);
     }
-  }
+  };
 
   const mintToken = async () => {
-    setLoader(true)
+    setLoader(true);
     if (privateListed) {
       console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
@@ -137,8 +175,7 @@ const TextComponent = (props) => {
         await privateSale(exactAddress, privateListed);
         //alert("Minted Successfully");
       }
-    }
-    else if (whiteListed) {
+    } else if (whiteListed) {
       let whiteListTime = isWhiteTime();
       if (!whiteListTime) {
         alert("WhiteList sale not started.");
@@ -151,8 +188,7 @@ const TextComponent = (props) => {
         await whitelistSale(exactAddress, whiteListed);
         //alert("Minted Successfully");
       }
-    }
-    else if (genesisHolder) {
+    } else if (genesisHolder) {
       console.log(genesisHolder, "genesisHolder");
       let genesisTime = isGenesisTime();
       if (!genesisTime) {
@@ -167,7 +203,7 @@ const TextComponent = (props) => {
         //alert("Minted Successfully");
       }
     }
-    setLoader(false)
+    setLoader(false);
   };
   console.log(whiteListed, "whiteListed");
 
@@ -187,23 +223,63 @@ const TextComponent = (props) => {
               <img
                 style={
                   privateBoughtInitiated ||
-                    whitelistBoughtInitiated ||
-                    genesisBoughtInitiated
+                  whitelistBoughtInitiated ||
+                  genesisBoughtInitiated
                     ? {
-                      width: "450px",
-                      height: "200px",
-                      marginLeft: "6%",
-                      marginTop: "auto",
-                    }
+                        width: "450px",
+                        height: "200px",
+                        display:"block",
+                        margin:"auto"
+                      }
                     : {
-                      width: "450px",
-                      height: "200px",
-                      marginLeft: "29%",
-                      marginTop: "12%",
-                    }
+                        width: "450px",
+                        height: "200px",
+                        marginLeft: "29%",
+                        marginTop: "12%",
+                      }
                 }
                 src={require("../assets/Group 13081@2x.png")}
               />
+            )}
+          </div>
+
+          <div className="connect-mint-button">
+            {connected && claimTimeActivated ? (
+              genesisHolder && gen2active ? (
+                <button
+                  className="connect-wallet-button-mint"
+                  style={{ marginTop: "4%" }}
+                  onClick={() => {
+                    claim();
+                  }}
+                >
+                  CLAIM 1
+                </button>
+              ) : gen2active && gen2ClaimList?.length > 0 ? (
+                <button
+                  className="connect-wallet-button-mint"
+                  style={{ marginTop: "4%" }}
+                  onClick={() => {
+                    claim();
+                  }}
+                >
+                  CLAIM 2
+                </button>
+              ) : genesisHolder && claimList?.length > 0 ? (
+                <button
+                  className="connect-wallet-button-mint"
+                  style={{ marginTop: "4%" }}
+                  onClick={() => {
+                    claim();
+                  }}
+                >
+                  CLAIM 3
+                </button>
+              ) : (
+                <></>
+              )
+            ) : (
+              <></>
             )}
           </div>
           <div className="connect-mint-button">
@@ -214,7 +290,7 @@ const TextComponent = (props) => {
                 <div className="message">YOU HAVE ALREADY MINTED</div>
               ) : genesisHolder && !genesisBoughtInitiated ? (
                 <div className="message">YOU HAVE ALREADY MINTED</div>
-              ) : connected && minted ? (
+              ) : connected? (
                 <>
                   <div className="wallet-address">{walletAddress}</div>
                   <div className="wallet-address-connected">CONNECTED</div>
@@ -223,7 +299,7 @@ const TextComponent = (props) => {
               ) : (
                 <>
                   {genesisBoughtInitiated &&
-                    genesisBoughtInitiated.length > 0 ? (
+                  genesisBoughtInitiated.length > 0 ? (
                     <>
                       <div className="wallet-address">{walletAddress}</div>
                       <div className="wallet-address-connected">CONNECTED</div>
@@ -244,19 +320,6 @@ const TextComponent = (props) => {
                       >
                         MINT NOW!
                       </button>
-                      {/* {
-                        genesisClaimFilter.length !== 0 ? <> */}
-                      {claimTimeActivated && gen2active || genesisHolder ? <button
-                        className="connect-wallet-button-mint"
-                        style={{ marginTop: "4%" }}
-                        onClick={() => {
-                          claim();
-                        }}
-                      >
-                        CLAIM
-                      </button> : ""}
-                      {/* </> : ""
-                      } */}
                     </>
                   ) : (
                     <>
@@ -273,46 +336,22 @@ const TextComponent = (props) => {
                           >
                             MINT NOW!
                           </button>
-                          {/* {
-                        genesisClaimFilter.length !== 0 ? <> */}
-                          {claimTimeActivated && gen2active || genesisHolder ? <button
+                        </>
+                      ) : privateListed ? (
+                        <>
+                          <div className="wallet-address-text">
+                            You are in the private JIRAlist!
+                          </div>
+                          <button
                             className="connect-wallet-button-mint"
-                            style={{ marginTop: "4%" }}
                             onClick={() => {
-                              claim();
+                              mintToken();
                             }}
                           >
-                            CLAIM
-                          </button> : ""}
-                          {/* </> : ""
-                      } */}
+                            MINT NOW!
+                          </button>
                         </>
-                      ) : privateListed ? <>
-                        <div className="wallet-address-text">
-                          You are in the private JIRAlist!
-                        </div>
-                        <button
-                          className="connect-wallet-button-mint"
-                          onClick={() => {
-                            mintToken();
-                          }}
-                        >
-                          MINT NOW!
-                        </button>
-                        {/* {
-                        genesisClaimFilter.length !== 0 ? <> */}
-                        {claimTimeActivated && gen2active || genesisHolder ? <button
-                          className="connect-wallet-button-mint"
-                          style={{ marginTop: "4%" }}
-                          onClick={() => {
-                            claim();
-                          }}
-                        >
-                          CLAIM
-                        </button> : ""}
-                        {/* </> : ""
-                      } */}
-                      </> : (
+                      ) : (
                         <>
                           <div className="wallet-address">{walletAddress}</div>
                           <div className="wallet-address-connected">
@@ -321,19 +360,6 @@ const TextComponent = (props) => {
                           <div className="wallet-address-text">
                             You are not eligible to mint.
                           </div>
-                          {/* {
-                        genesisClaimFilter.length !== 0 ? <> */}
-                          {claimTimeActivated && gen2active || genesisHolder ? <button
-                            className="connect-wallet-button-mint"
-                            style={{ marginTop: "4%" }}
-                            onClick={() => {
-                              claim();
-                            }}
-                          >
-                            CLAIM
-                          </button> : ""}
-                          {/* </> : ""
-                      } */}
                         </>
                       )}
                     </>

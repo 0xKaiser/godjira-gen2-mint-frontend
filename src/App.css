@@ -3,3 +3,7 @@ body {
   background-color: #1d1e22;
   height: 120vh;
 }
+.connect-mint-button{
+  display: block;
+  margin: auto;
+}
