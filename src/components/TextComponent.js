@@ -65,7 +65,6 @@ const TextComponent = (props) => {
       let genesisBoughtRes = await genesisBought(isGenesisHolderRes);
       console.log(genesisBoughtRes, "initial res");
       setGenesisBoughtRes(genesisBoughtRes);
-     
     }
     //Setting text MESSAGE
     if (isPrivateListedRes) setTextMessage(msg.private);
@@ -83,19 +82,13 @@ const TextComponent = (props) => {
       setClaimTimeActivated(true)
     }
 
-    // let genesisClaimedList = await genesisClaimed(genesisHolder)
-    // console.log(genesisClaimedList, "FILTER")
-    // setGenesisClaimFilter(genesisClaimedList)
-    // let gen2ClaimedList = await gen2Claimed(genesisHolder)
-    // setGen2ClaimFilter(gen2ClaimedList)
-
+    console.log(privateListed, "PRIVATE LISTED LIST")
     setLoader(false);
-    
+
   };
-    
+
 
   const connectWallet = async () => {
-    //console.log("CLICKED ON Connect wallet");
     await connectWalletHandler(
       setLoader,
       setConnected,
@@ -113,39 +106,23 @@ const TextComponent = (props) => {
 
   const claim = async () => {
     let genesisClaimedList = await genesisClaimed(genesisHolder)
-    //console.log(gen2active,'gen2active')
+    console.log(gen2active,'gen2active')
     let gen2ClaimedList = await gen2Claimed(gen2active)
-    console.log('gen2',gen2ClaimedList)
-    //let gen2ClaimedList = []
-    if (claimTimeActivated) {
-      if (genesisHolder) {
-        if (genesisClaimedList.length > 0) {
-          genesisClaim(genesisClaimedList)
-        } else if(gen2ClaimedList.length === 0){
-          alert("You have no genesis tokens to claim")
-        }
-      } else if (gen2active) {
-        if (gen2ClaimedList.length > 0) {
-          gen2Claim(gen2ClaimedList)
-        } else if(gen2ClaimedList.length === 0){
-          alert("You have no genesis tokens to claim")
-        }
-
-      }
+    console.log('gen2', gen2ClaimedList)
+    if(claimTimeActivated && genesisHolder && gen2active ){
+      genesisClaim(genesisClaimedList)
+      gen2Claim(gen2ClaimedList)
+    }else if(claimTimeActivated && genesisHolder && genesisClaimedList.length > 0){
+      genesisClaim(genesisClaimedList)
+    }else if (claimTimeActivated && gen2active && gen2ClaimedList.length > 0){
+      gen2Claim(gen2ClaimedList)
+    }else{
+      alert("You have no genesis tokens to claim")
     }
   }
 
   const mintToken = async () => {
     setLoader(true)
-    // //console.log(
-    //   "YES.....",
-    //   privateListed,
-    //   whiteListed,
-    //   genesisHolder,
-    //   privateBoughtInitiated,
-    //   whitelistBoughtInitiated,
-    //   genesisBoughtInitiated
-    // );
     if (privateListed) {
       console.log(privateListed, "privateListed");
       let privateTime = isPrivateTime();
